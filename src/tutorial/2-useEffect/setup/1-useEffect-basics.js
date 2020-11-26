@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 // second parameter
 const UseEffectBasics = () => {
   console.log('hello')
+  console.log('jello')
   return <h2>useEffect Basics</h2>
 }
 
