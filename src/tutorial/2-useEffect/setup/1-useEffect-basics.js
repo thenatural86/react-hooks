@@ -10,7 +10,12 @@ const UseEffectBasics = () => {
     if (value > 0) {
       document.title = `New Messages (${value})`
     }
-  })
+  }, [value])
+
+  useEffect(() => {
+    console.log('yolo world')
+  }, [])
+
   console.log('render component')
 
   return (
