@@ -4,15 +4,15 @@ import React, { useState } from 'react'
 
 const ShortCircuit = () => {
   const [text, setText] = useState('J.Lo')
-  const firstValue = text || 'hello world'
-  const secondValue = text && 'hello world'
+  const [isError, setIsError] = useState(false)
 
   return (
     <>
-      {/* <h2>{firstValue}</h2>
-      <h2>value: {secondValue}</h2> */}
       <h1>{text || 'yolo dolo'}</h1>
-      {text && <h1>yolo world</h1>}
+      <button className='btn' onClick={() => setIsError(!isError)}>
+        Yolo Error
+      </button>
+      {isError ? <h1>Error...</h1> : <h1>There is no error</h1>}
     </>
   )
 }
