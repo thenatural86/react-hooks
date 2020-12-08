@@ -5,15 +5,19 @@ import { data } from '../../../data'
 // always return some kind of state
 const reducer = (state, action) => {
   console.log(state, action)
-  if (action.type === 'TESTING') {
+  if (action.type === 'ADD_ITEM') {
+    const newPeople = [...state.people, action.payload]
     return {
       ...state,
-      people: data,
+      people: newPeople,
       isModalOPen: true,
-      modalContent: 'item added',
+      modalContent: 'person added',
     }
   }
-  return state
+  if (action.type === 'NO_VALUE') {
+    return { ...state, isModalOPen: true, modalContent: 'please enter value' }
+  }
+  throw new Error('no matching type YOLO')
 }
 
 // have state that is an obj and has multiple properties
@@ -32,8 +36,11 @@ const Index = () => {
     e.preventDefault()
     if (name) {
       // dispatch my action, then reducer handles it
-      dispatch({ type: 'TESTING' })
+      const newPerson = { id: new Date().getTime().toString(), name }
+      dispatch({ type: 'ADD_ITEM', payload: newPerson })
+      setName('')
     } else {
+      dispatch({ type: 'NO_VALUE' })
     }
   }
 
