@@ -1,24 +1,7 @@
 import React, { useState, useReducer } from 'react'
 import Modal from './Modal'
 import { data } from '../../../data'
-// reducer function
-// always return some kind of state
-const reducer = (state, action) => {
-  console.log(state, action)
-  if (action.type === 'ADD_ITEM') {
-    const newPeople = [...state.people, action.payload]
-    return {
-      ...state,
-      people: newPeople,
-      isModalOPen: true,
-      modalContent: 'person added',
-    }
-  }
-  if (action.type === 'NO_VALUE') {
-    return { ...state, isModalOPen: true, modalContent: 'please enter value' }
-  }
-  throw new Error('no matching type YOLO')
-}
+import { reducer } from './reducer'
 
 // have state that is an obj and has multiple properties
 const defaultState = {
@@ -31,7 +14,7 @@ const Index = () => {
   const [name, setName] = useState('')
   // useReducer takes reducer function and default state as args
   const [state, dispatch] = useReducer(reducer, defaultState)
-
+  // dispatch an action to handle submit
   const handleSubmit = (e) => {
     e.preventDefault()
     if (name) {
@@ -44,9 +27,16 @@ const Index = () => {
     }
   }
 
+  // dispatch an action to close modal
+  const closeModal = () => {
+    dispatch({ type: 'CLOSE_MODAL' })
+  }
+
   return (
     <>
-      {state.isModalOPen ? <Modal modalContent={state.modalContent} /> : null}
+      {state.isModalOPen ? (
+        <Modal modalContent={state.modalContent} closeModal={closeModal} />
+      ) : null}
       <form onSubmit={handleSubmit} className='form'>
         <div>
           <input
@@ -59,8 +49,15 @@ const Index = () => {
       </form>
       {state.people.map((person) => {
         return (
-          <div key={person.id}>
+          <div key={person.id} className='item'>
             <h4>{person.name}</h4>
+            <button
+              onClick={() =>
+                dispatch({ type: 'REMOVE_PERSON', payload: person.id })
+              }
+            >
+              remove person
+            </button>
           </div>
         )
       })}
